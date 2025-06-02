@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* XP-style Weather Sidebar */
+        body {
+            font-family: 'Tahoma', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ECE9D8;
+            color: #000;
+            overflow-x: hidden;
+            user-select: none;
+        }
+        
+        .weather-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* XP-style header with gradient */
+        .weather-header {
+            background: linear-gradient(to bottom, #7BA1E4 0%, #3363AD 100%);
+            color: white;
+            padding: 5px 8px;
+            font-weight: bold;
+            border-bottom: 1px solid #0F377D;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        }
+        
+        /* XP-style content section with inset */
+        .weather-content {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            border: 1px solid #D2D2BF;
+            background-color: #FFFFFF;
+            margin: 5px;
+            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* Current conditions card */
+        .current-weather {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #D2D2BF;
+        }
+        
+        .location {
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .temperature {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .condition {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .condition-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 5px;
+        }
+        
+        .weather-details {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        
+        .detail {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+        
+        .detail-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+            opacity: 0.7;
+        }
+        
+        /* Forecast section */
+        .forecast-title {
+            font-weight: bold;
+            margin: 10px 0 5px 0;
+            padding-top: 5px;
+            border-top: 1px dashed #D2D2BF;
+        }
+        
+        .forecast-day {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #F0F0E7;
+        }
+        
+        .day-name {
+            font-weight: bold;
+            font-size: 12px;
+            width: 30%;
+        }
+        
+        .day-condition {
+            display: flex;
+            align-items: center;
+            width: 30%;
+            font-size: 12px;
+        }
+        
+        .day-temp {
+            text-align: right;
+            width: 30%;
+            font-size: 12px;
+        }
+        
+        /* XP-style buttons */
+        .xp-button {
+            background: linear-gradient(to bottom, #FFFFFF 0%, #ECE9D8 100%);
+            border: 1px solid #ADB1B8;
+            border-radius: 3px;
+            padding: 4px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            margin: 2px;
+            box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+        }
+        
+        .xp-button:hover {
+            background: linear-gradient(to bottom, #EDF2F8 0%, #D9E6F7 100%);
+            border-color: #4884D9;
+        }
+        
+        .xp-button:active {
+            background: #DAE7F8;
+            box-shadow: inset 1px 1px 1px rgba(0,0,0,0.1);
+        }
+        
+        /* Settings panel */
+        .settings-panel {
+            background-color: #F5F5F0;
+            border: 1px solid #D2D2BF;
+            margin: 5px;
+            padding: 8px;
+            display: none;
+        }
+        
+        .settings-panel.show {
+            display: block;
+        }
+        
+        .settings-group {
+            margin-bottom: 10px;
+        }
+        
+        .settings-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+        
+        .settings-input {
+            margin: 4px 0;
+            font-size: 12px;
+        }
+        
+        input[type="text"], select {
+            border: 1px solid #ADB1B8;
+            padding: 3px;
+            font-size: 11px;
+            width: calc(100% - 8px);
+            background: white;
+        }
+        
+        /* Footer with update info */
+        .weather-footer {
+            padding: 5px;
+            font-size: 10px;
+            color: #666;
+            text-align: center;
+            background-color: #ECE9D8;
+            border-top: 1px solid #D2D2BF;
+        }
+        
+        /* Alert message */
+        .weather-alert {
+            background-color: #FFF4D6;
+            border: 1px solid #FFC658;
+            margin: 5px 0;
+            padding: 8px;
+            font-size: 12px;
+            display: none;
+        }
+        
+        .weather-alert.show {
+            display: block;
+        }
+        
+        .alert-title {
+            font-weight: bold;
+            color: #CC5500;
+            margin-bottom: 4px;
+        }
+        
+        /* Loading indicator */
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-style: italic;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-container">
+        <div class="weather-header">
+            <span>Weather</span>
+            <button id="settings-toggle" class="xp-button">⚙️ Settings</button>
+        </div>
+        
+        <!-- Settings Panel -->
+        <div id="settings-panel" class="settings-panel">
+            <div class="settings-group">
+                <div class="settings-title">Location</div>
+                <div class="settings-input">
+                    <input type="text" id="location-input" placeholder="City name or 'auto' for current location">
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <div class="settings-title">Units</div>
+                <div class="settings-input">
+                    <select id="units-select">
+                        <option value="metric">Celsius (°C)</option>
+                        <option value="imperial">Fahrenheit (°F)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <div class="settings-title">Refresh Interval</div>
+                <div class="settings-input">
+                    <select id="refresh-select">
+                        <option value="15">15 minutes</option>
+                        <option value="30">30 minutes</option>
+                        <option value="60">1 hour</option>
+                        <option value="120">2 hours</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="settings-input">
+                <label>
+                    <input type="checkbox" id="notifications-checkbox">
+                    Show weather alerts
+                </label>
+            </div>
+            
+            <div style="text-align: right; margin-top: 10px;">
+                <button id="save-settings" class="xp-button">Save</button>
+                <button id="cancel-settings" class="xp-button">Cancel</button>
+            </div>
+        </div>
+        
+        <!-- Weather Alert -->
+        <div id="weather-alert" class="weather-alert">
+            <div class="alert-title">⚠️ Weather Alert</div>
+            <div id="alert-message"></div>
+        </div>
+        
+        <div class="weather-content">
+            <div id="loading" class="loading">
+                Loading weather data...
+            </div>
+            
+            <div id="weather-display" style="display: none;">
+                <!-- Current Weather -->
+                <div class="current-weather">
+                    <div class="location" id="location">Current Location</div>
+                    <div class="temperature" id="temperature">--°C</div>
+                    <div class="condition" id="condition">
+                        <span class="condition-icon">🌤️</span>
+                        <span>Unknown</span>
+                    </div>
+                    
+                    <div class="weather-details">
+                        <div class="detail">
+                            <span class="detail-icon">💧</span>
+                            <span>Humidity: <span id="humidity">--%</span></span>
+                        </div>
+                        <div class="detail">
+                            <span class="detail-icon">💨</span>
+                            <span>Wind: <span id="wind">-- km/h</span></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Forecast -->
+                <div class="forecast-section">
+                    <div class="forecast-title">5-Day Forecast</div>
+                    <div id="forecast-container">
+                        <!-- Forecast days will be added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="weather-footer">
+            Last updated: <span id="last-updated">Never</span>
+            <button id="refresh-button" class="xp-button" style="margin-left: 8px;">🔄 Refresh</button>
+        </div>
+    </div>
+    
+    <script>
+        /**
+         * █▀▀ █▀█ █▀▄ █▀▀ ▀▄▀
+         * █▄▄ █▄█ █▄▀ ██▄ █░█
+         * 
+         * Weather Plugin - Sidebar Component
+         * Displays weather data and forecast in XP style
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const loadingElement = document.getElementById('loading');
+            const weatherDisplay = document.getElementById('weather-display');
+            const locationElement = document.getElementById('location');
+            const temperatureElement = document.getElementById('temperature');
+            const conditionElement = document.getElementById('condition');
+            const humidityElement = document.getElementById('humidity');
+            const windElement = document.getElementById('wind');
+            const lastUpdatedElement = document.getElementById('last-updated');
+            const forecastContainer = document.getElementById('forecast-container');
+            const refreshButton = document.getElementById('refresh-button');
+            const settingsToggle = document.getElementById('settings-toggle');
+            const settingsPanel = document.getElementById('settings-panel');
+            const saveSettingsButton = document.getElementById('save-settings');
+            const cancelSettingsButton = document.getElementById('cancel-settings');
+            const locationInput = document.getElementById('location-input');
+            const unitsSelect = document.getElementById('units-select');
+            const refreshSelect = document.getElementById('refresh-select');
+            const notificationsCheckbox = document.getElementById('notifications-checkbox');
+            const weatherAlert = document.getElementById('weather-alert');
+            const alertMessage = document.getElementById('alert-message');
+            
+            // Settings object
+            let settings = {
+                location: 'auto',
+                units: 'metric',
+                refreshInterval: 30,
+                showNotifications: true
+            };
+            
+            // Initialize UI
+            function init() {
+                // Request weather data from plugin
+                window.parent.postMessage({
+                    plugin: 'weather-plugin',
+                    type: 'getWeather'
+                }, '*');
+                
+                // Request forecast data
+                window.parent.postMessage({
+                    plugin: 'weather-plugin',
+                    type: 'getForecast'
+                }, '*');
+                
+                // Set up message listener
+                window.addEventListener('message', handleMessage);
+                
+                // Set up UI event listeners
+                refreshButton.addEventListener('click', refreshData);
+                settingsToggle.addEventListener('click', toggleSettings);
+                saveSettingsButton.addEventListener('click', saveSettings);
+                cancelSettingsButton.addEventListener('click', toggleSettings);
+            }
+            
+            // Handle messages from the plugin
+            function handleMessage(event) {
+                const { plugin, type, data } = event.data;
+                
+                if (plugin !== 'weather-plugin') return;
+                
+                switch (type) {
+                    case 'weatherData':
+                        updateWeatherUI(data);
+                        break;
+                    case 'forecastData':
+                        updateForecastUI(data);
+                        break;
+                    case 'settingsUpdated':
+                        settings = data;
+                        updateSettingsUI();
+                        break;
+                    case 'weatherAlert':
+                        showAlert(data);
+                        break;
+                }
+            }
+            
+            // Update the weather UI with data
+            function updateWeatherUI(data) {
+                // Hide loading, show weather
+                loadingElement.style.display = 'none';
+                weatherDisplay.style.display = 'block';
+                
+                // Update elements
+                locationElement.textContent = data.location;
+                temperatureElement.textContent = `${data.temperature}${data.units}`;
+                
+                // Set condition with appropriate icon
+                const icon = getWeatherIcon(data.condition);
+                conditionElement.innerHTML = `<span class="condition-icon">${icon}</span> <span>${data.condition}</span>`;
+                
+                // Update details
+                humidityElement.textContent = `${data.humidity}%`;
+                windElement.textContent = `${data.windSpeed} ${data.windUnits}`;
+                
+                // Update last updated time
+                lastUpdatedElement.textContent = data.updated;
+            }
+            
+            // Update the forecast UI with data
+            function updateForecastUI(data) {
+                // Clear current forecast
+                forecastContainer.innerHTML = '';
+                
+                // Add each forecast day
+                data.forEach(day => {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'forecast-day';
+                    
+                    const icon = getWeatherIcon(day.condition);
+                    
+                    dayElement.innerHTML = `
+                        <div class="day-name">${day.day}</div>
+                        <div class="day-condition">
+                            <span class="condition-icon">${icon}</span>
+                            <span>${day.condition}</span>
+                        </div>
+                        <div class="day-temp">${day.high}/${day.low}${day.units}</div>
+                    `;
+                    
+                    forecastContainer.appendChild(dayElement);
+                });
+            }
+            
+            // Refresh data
+            function refreshData() {
+                // Show loading
+                loadingElement.style.display = 'block';
+                weatherDisplay.style.display = 'none';
+                
+                // Request new data
+                window.parent.postMessage({
+                    plugin: 'weather-plugin',
+                    type: 'getWeather'
+                }, '*');
+                
+                window.parent.postMessage({
+                    plugin: 'weather-plugin',
+                    type: 'getForecast'
+                }, '*');
+            }
+            
+            // Toggle settings panel
+            function toggleSettings() {
+                settingsPanel.classList.toggle('show');
+                updateSettingsUI();
+            }
+            
+            // Update settings UI with current values
+            function updateSettingsUI() {
+                locationInput.value = settings.location;
+                unitsSelect.value = settings.units;
+                refreshSelect.value = settings.refreshInterval.toString();
+                notificationsCheckbox.checked = settings.showNotifications;
+            }
+            
+            // Save settings
+            function saveSettings() {
+                const newSettings = {
+                    location: locationInput.value,
+                    units: unitsSelect.value,
+                    refreshInterval: parseInt(refreshSelect.value),
+                    showNotifications: notificationsCheckbox.checked
+                };
+                
+                // Send settings to plugin
+                window.parent.postMessage({
+                    plugin: 'weather-plugin',
+                    type: 'updateSettings',
+                    data: newSettings
+                }, '*');
+                
+                // Close settings panel
+                settingsPanel.classList.remove('show');
+            }
+            
+            // Show weather alert
+            function showAlert(alertData) {
+                if (!settings.showNotifications) return;
+                
+                alertMessage.textContent = alertData.message;
+                weatherAlert.className = `weather-alert show ${alertData.severity || 'warning'}`;
+                
+                // Auto-hide after 10 seconds
+                setTimeout(() => {
+                    weatherAlert.classList.remove('show');
+                }, 10000);
+            }
+            
+            // Get weather icon based on condition
+            function getWeatherIcon(condition) {
+                const condition_lower = condition.toLowerCase();
+                
+                if (condition_lower.includes('sunny')) return '☀️';
+                if (condition_lower.includes('partly cloudy')) return '⛅';
+                if (condition_lower.includes('cloudy')) return '☁️';
+                if (condition_lower.includes('rain')) return '🌧️';
+                if (condition_lower.includes('thunder')) return '⛈️';
+                if (condition_lower.includes('snow')) return '❄️';
+                if (condition_lower.includes('fog')) return '🌫️';
+                if (condition_lower.includes('wind')) return '💨';
+                if (condition_lower.includes('clear')) return '🌙';
+                
+                // Default icon
+                return '🌤️';
+            }
+            
+            // Initialize
+            init();
+        });
+    </script>
+</body>
+</html>

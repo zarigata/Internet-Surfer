@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
+    <title>Internet Server</title>
+    <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="./styles/xp-theme.css">
+</head>
+<body class="xp-theme">
+    <!-- 
+    █▀▀ █▀█ █▀▄ █▀▀ ▀▄▀
+    █▄▄ █▄█ █▄▀ ██▄ █░█
+    
+    Internet Server - Main UI Entry Point
+    
+    This is the main HTML file that serves as the entry point for the
+    browser UI. It implements a Windows XP style interface with custom
+    title bar, tab system, and browser controls.
+    
+    Copyright (c) 2025 ZARI CORP
+    -->
+    
+    <!-- Custom XP-style Window Frame -->
+    <header id="titlebar" class="xp-titlebar">
+        <div class="xp-titlebar-icon">
+            <img src="../assets/icon.png" alt="Internet Server" width="16" height="16">
+        </div>
+        <div class="xp-titlebar-text">Internet Server</div>
+        <div class="xp-titlebar-controls">
+            <button id="minimize-btn" class="xp-button minimize-button" title="Minimize">
+                <span>_</span>
+            </button>
+            <button id="maximize-btn" class="xp-button maximize-button" title="Maximize">
+                <span>□</span>
+            </button>
+            <button id="close-btn" class="xp-button close-button" title="Close">
+                <span>✕</span>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Main Menu Bar -->
+    <div class="xp-menubar">
+        <div class="xp-menu">
+            <button class="xp-menu-item">File</button>
+            <div class="xp-menu-dropdown">
+                <button class="xp-menu-dropdown-item" id="new-tab-btn">New Tab</button>
+                <button class="xp-menu-dropdown-item" id="new-window-btn">New Window</button>
+                <div class="xp-menu-separator"></div>
+                <button class="xp-menu-dropdown-item" id="open-file-btn">Open File...</button>
+                <button class="xp-menu-dropdown-item" id="save-page-btn">Save Page As...</button>
+                <div class="xp-menu-separator"></div>
+                <button class="xp-menu-dropdown-item" id="print-btn">Print...</button>
+                <div class="xp-menu-separator"></div>
+                <button class="xp-menu-dropdown-item" id="exit-btn">Exit</button>
+            </div>
+        </div>
+        <div class="xp-menu">
+            <button class="xp-menu-item">Edit</button>
+            <div class="xp-menu-dropdown">
+                <button class="xp-menu-dropdown-item" id="cut-btn">Cut</button>
+                <button class="xp-menu-dropdown-item" id="copy-btn">Copy</button>
+                <button class="xp-menu-dropdown-item" id="paste-btn">Paste</button>
+                <div class="xp-menu-separator"></div>
+                <button class="xp-menu-dropdown-item" id="find-btn">Find...</button>
+            </div>
+        </div>
+        <div class="xp-menu">
+            <button class="xp-menu-item">View</button>
+            <div class="xp-menu-dropdown">
+                <button class="xp-menu-dropdown-item" id="refresh-btn">Refresh</button>
+                <button class="xp-menu-dropdown-item" id="zoom-in-btn">Zoom In</button>
+                <button class="xp-menu-dropdown-item" id="zoom-out-btn">Zoom Out</button>
+                <button class="xp-menu-dropdown-item" id="zoom-reset-btn">Reset Zoom</button>
+                <div class="xp-menu-separator"></div>
+                <button class="xp-menu-dropdown-item" id="toggle-dev-tools-btn">Developer Tools</button>
+            </div>
+        </div>
+        <div class="xp-menu">
+            <button class="xp-menu-item">Tools</button>
+            <div class="xp-menu-dropdown">
+                <button class="xp-menu-dropdown-item" id="limiter-btn">Resource Limiters</button>
+                <button class="xp-menu-dropdown-item" id="plugins-btn">Plugins</button>
+                <button class="xp-menu-dropdown-item" id="themes-btn">Themes</button>
+                <button class="xp-menu-dropdown-item" id="sounds-btn">Sound Effects</button>
+                <div class="xp-menu-separator"></div>
+                <button class="xp-menu-dropdown-item" id="settings-btn">Settings</button>
+            </div>
+        </div>
+        <div class="xp-menu">
+            <button class="xp-menu-item">Help</button>
+            <div class="xp-menu-dropdown">
+                <button class="xp-menu-dropdown-item" id="help-contents-btn">Help Contents</button>
+                <button class="xp-menu-dropdown-item" id="about-btn">About Internet Server</button>
+                <button class="xp-menu-dropdown-item" id="check-updates-btn">Check for Updates</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toolbar -->
+    <div class="xp-toolbar">
+        <button id="back-btn" class="xp-button toolbar-button" title="Back">
+            <img src="../assets/icons/back.png" alt="Back">
+        </button>
+        <button id="forward-btn" class="xp-button toolbar-button" title="Forward">
+            <img src="../assets/icons/forward.png" alt="Forward">
+        </button>
+        <button id="refresh-btn-toolbar" class="xp-button toolbar-button" title="Refresh">
+            <img src="../assets/icons/refresh.png" alt="Refresh">
+        </button>
+        <button id="home-btn" class="xp-button toolbar-button" title="Home">
+            <img src="../assets/icons/home.png" alt="Home">
+        </button>
+        <div class="address-bar">
+            <span class="address-prefix">Address</span>
+            <input type="text" id="url-input" class="xp-input" placeholder="Enter URL">
+            <button id="go-btn" class="xp-button go-button">Go</button>
+        </div>
+        <button id="favorites-btn" class="xp-button toolbar-button" title="Favorites">
+            <img src="../assets/icons/favorites.png" alt="Favorites">
+        </button>
+    </div>
+    
+    <!-- Tab Bar -->
+    <div class="xp-tabbar" id="tab-bar">
+        <!-- Tabs will be dynamically added here -->
+        <div class="xp-tab active" data-tab-id="tab-1">
+            <span class="tab-title">New Tab</span>
+            <button class="tab-close">✕</button>
+        </div>
+        <button id="new-tab-button" class="xp-button new-tab-button">+</button>
+    </div>
+    
+    <!-- Main Browser Content Area -->
+    <main id="browser-container">
+        <div class="browser-view active" id="tab-1-view">
+            <webview id="webview-tab-1" src="about:blank" class="browser-webview"></webview>
+        </div>
+        <!-- Additional browser views will be dynamically added here -->
+    </main>
+    
+    <!-- Resource Limiter Display -->
+    <div class="resource-monitor xp-infobar">
+        <div class="resource-meter cpu-meter">
+            <span class="resource-label">CPU:</span>
+            <div class="meter-bar">
+                <div class="meter-fill" id="cpu-meter-fill" style="width: 0%"></div>
+            </div>
+            <span class="resource-value" id="cpu-value">0%</span>
+        </div>
+        <div class="resource-meter ram-meter">
+            <span class="resource-label">RAM:</span>
+            <div class="meter-bar">
+                <div class="meter-fill" id="ram-meter-fill" style="width: 0%"></div>
+            </div>
+            <span class="resource-value" id="ram-value">0MB</span>
+        </div>
+        <div class="resource-meter network-meter">
+            <span class="resource-label">NET:</span>
+            <div class="meter-bar">
+                <div class="meter-fill" id="network-meter-fill" style="width: 0%"></div>
+            </div>
+            <span class="resource-value" id="network-value">0KB/s</span>
+        </div>
+    </div>
+    
+    <!-- Status Bar -->
+    <footer class="xp-statusbar">
+        <div class="status-text">Ready</div>
+        <div class="status-zones">
+            <div class="status-zone" id="security-zone">Internet</div>
+            <div class="status-zone" id="zoom-level">100%</div>
+        </div>
+    </footer>
+    
+    <!-- Modal Dialogs (Initially Hidden) -->
+    <div id="modal-container" class="xp-modal-container">
+        <!-- Resource Limiter Settings Dialog -->
+        <div id="limiter-dialog" class="xp-dialog">
+            <div class="xp-dialog-titlebar">
+                <span class="xp-dialog-title">Resource Limiters</span>
+                <button class="xp-dialog-close">✕</button>
+            </div>
+            <div class="xp-dialog-content">
+                <div class="limiter-setting">
+                    <label for="cpu-limit">CPU Limit (%)</label>
+                    <input type="range" id="cpu-limit" min="10" max="100" value="70">
+                    <span id="cpu-limit-value">70%</span>
+                </div>
+                <div class="limiter-setting">
+                    <label for="ram-limit">RAM Limit (MB)</label>
+                    <input type="range" id="ram-limit" min="256" max="4096" step="128" value="1024">
+                    <span id="ram-limit-value">1024MB</span>
+                </div>
+                <div class="limiter-setting">
+                    <label for="network-limit">Network Limit (kbps, 0=unlimited)</label>
+                    <input type="range" id="network-limit" min="0" max="10000" step="100" value="0">
+                    <span id="network-limit-value">Unlimited</span>
+                </div>
+            </div>
+            <div class="xp-dialog-buttons">
+                <button id="limiter-apply" class="xp-button">Apply</button>
+                <button id="limiter-cancel" class="xp-button">Cancel</button>
+            </div>
+        </div>
+        
+        <!-- Theme Settings Dialog -->
+        <div id="theme-dialog" class="xp-dialog">
+            <div class="xp-dialog-titlebar">
+                <span class="xp-dialog-title">Theme Settings</span>
+                <button class="xp-dialog-close">✕</button>
+            </div>
+            <div class="xp-dialog-content">
+                <div class="theme-options">
+                    <div class="theme-option">
+                        <input type="radio" name="theme" id="theme-xp-classic" value="xp_classic" checked>
+                        <label for="theme-xp-classic">Windows XP Classic</label>
+                        <div class="theme-preview xp-classic-preview"></div>
+                    </div>
+                    <div class="theme-option">
+                        <input type="radio" name="theme" id="theme-xp-luna" value="xp_luna">
+                        <label for="theme-xp-luna">Windows XP Luna</label>
+                        <div class="theme-preview xp-luna-preview"></div>
+                    </div>
+                    <div class="theme-option">
+                        <input type="radio" name="theme" id="theme-dark" value="dark">
+                        <label for="theme-dark">Dark Mode</label>
+                        <div class="theme-preview dark-preview"></div>
+                    </div>
+                    <div class="theme-option">
+                        <input type="radio" name="theme" id="theme-hacker" value="hacker">
+                        <label for="theme-hacker">Hacker Mode</label>
+                        <div class="theme-preview hacker-preview"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="xp-dialog-buttons">
+                <button id="theme-apply" class="xp-button">Apply</button>
+                <button id="theme-cancel" class="xp-button">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Script imports -->
+    <script src="./renderer.js"></script>
+    <script src="./components/tab-manager.js"></script>
+    <script src="./components/resource-monitor.js"></script>
+    <script src="./components/sound-manager.js"></script>
+</body>
+</html>

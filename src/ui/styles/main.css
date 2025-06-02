@@ -1,0 +1,423 @@
+/*
+ * ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+ * █  ███  █        █  ████████  ████████  ██████  █       █  ████████  ████████        █       █  ███  █  ████████  ████████  ███  █  ████████  ████████  █
+ * █  ███  █  ████  █  ████████  ████████  ██████  █  ████ █  ████████  ████████  ████  █  ████ █   █   █  ████████  ████████  ███  █  ████████  ████████  █
+ * █  ███  █  ████  █  █      █  █      █  ██████  █  ████ █  █      █  █      █  ████  █  ████ █       █  █      █  █      █       █  █      █  █      █  █
+ * █       █  ████  █  ████████  █      █  ██████  █       █  ████████  █      █  ████  █       █  ███  █  ████████  █      █   ███ █  ████████  █      █  █
+ * █  ███  █  ████  █  ████████  █      █  ██████  █  █  █ █  ████████  █      █  ████  █  █  █ █  ███  █  ████████  █      █  █ ██ █  ████████  █      █  █
+ * █  ███  █  ████  █  █         █      █  ██████  █  ███  █  █         █      █  ████  █  ███  █  ███  █  █         █      █  ██ █ █  █         █      █  █
+ * █  ███  █        █  █         ████████  ██████  █  ████ █  █         ████████        █  ████ █  ███  █  █         ████████  ███  █  █         ████████  █
+ * ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+ *
+ * Internet Server - Main CSS
+ * 
+ * K3YGEN CORP 2025 - ALL RIGHTS RESERVED
+ * 
+ * This CSS file provides the base styling for the Internet Server browser.
+ * It contains common elements and layout structures that are used throughout the application.
+ * Theme-specific styles are contained in separate theme CSS files.
+ */
+
+/* ===== RESET AND BASE STYLES ===== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+@font-face {
+    font-family: 'Tahoma';
+    src: url('../../assets/fonts/tahoma.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tahoma Bold';
+    src: url('../../assets/fonts/tahomabd.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Tahoma', sans-serif;
+    font-size: 11px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #ECE9D8;
+}
+
+/* ===== LAYOUT COMPONENTS ===== */
+/*
+ * ███████████████████████████████████████████████████████████████
+ * █                                                             █
+ * █    MAIN APPLICATION LAYOUT                                  █
+ * █    - Flexbox-based layout for optimal resizing              █
+ * █    - Each section sized appropriately                       █
+ * █    - Handles vertical flow of browser components            █
+ * █                                                             █
+ * ███████████████████████████████████████████████████████████████
+ */
+
+header#titlebar {
+    -webkit-app-region: drag;
+    height: 28px;
+    flex-shrink: 0;
+    z-index: 1000;
+}
+
+.xp-menubar {
+    height: 23px;
+    flex-shrink: 0;
+    z-index: 900;
+}
+
+.xp-toolbar {
+    height: 36px;
+    flex-shrink: 0;
+    z-index: 800;
+}
+
+.xp-tabbar {
+    height: 30px;
+    flex-shrink: 0;
+    z-index: 700;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+main#browser-container {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+    z-index: 100;
+}
+
+.resource-monitor {
+    height: 25px;
+    flex-shrink: 0;
+    z-index: 600;
+}
+
+footer.xp-statusbar {
+    height: 22px;
+    flex-shrink: 0;
+    z-index: 500;
+}
+
+/* ===== BROWSER VIEWS AND WEBVIEWS ===== */
+/*
+ * ███████████████████████████████████████████████████████████████
+ * █                                                             █
+ * █    BROWSER CONTENT AREA                                     █
+ * █    - Contains webviews for each tab                         █
+ * █    - Only one view active at a time                         █
+ * █    - Takes up all available space in window                 █
+ * █                                                             █
+ * ███████████████████████████████████████████████████████████████
+ */
+
+.browser-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.browser-view.active {
+    display: block;
+}
+
+.browser-webview {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* ===== RESOURCE MONITOR ===== */
+/*
+ * ███████████████████████████████████████████████████████████████
+ * █                                                             █
+ * █    RESOURCE MONITORS                                        █
+ * █    - Displays CPU, RAM, and network usage                   █
+ * █    - Bar graph visualization for each                       █
+ * █    - Updates in real-time from main process                 █
+ * █                                                             █
+ * ███████████████████████████████████████████████████████████████
+ */
+
+.resource-monitor {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.resource-meter {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.resource-label {
+    margin-right: 5px;
+    width: 35px;
+}
+
+.meter-bar {
+    width: 100px;
+    height: 10px;
+    border: 1px solid #999;
+    margin-right: 5px;
+    position: relative;
+    background-color: #fff;
+}
+
+.meter-fill {
+    height: 100%;
+    background-color: #0078d7;
+    width: 0%;
+    transition: width 0.5s;
+}
+
+.resource-value {
+    width: 50px;
+    text-align: right;
+}
+
+/* ===== MODAL DIALOGS ===== */
+/*
+ * ███████████████████████████████████████████████████████████████
+ * █                                                             █
+ * █    DIALOG WINDOWS                                           █
+ * █    - XP-style dialog boxes                                  █
+ * █    - For settings, resource limiters, and preferences       █
+ * █    - Centered modal overlays                                █
+ * █                                                             █
+ * ███████████████████████████████████████████████████████████████
+ */
+
+.xp-modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+}
+
+.xp-modal-container.active {
+    display: flex;
+}
+
+.xp-dialog {
+    width: 450px;
+    background-color: #ECE9D8;
+    border: 2px solid #0055E5;
+    border-radius: 3px;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.3);
+    display: none;
+}
+
+.xp-dialog.active {
+    display: block;
+}
+
+.xp-dialog-titlebar {
+    background: linear-gradient(to right, #0A246A, #A6CAF0);
+    color: white;
+    padding: 5px 8px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.xp-dialog-content {
+    padding: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.xp-dialog-buttons {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: flex-end;
+    background-color: #ECE9D8;
+    border-top: 1px solid #BFC0C1;
+}
+
+.xp-dialog-buttons .xp-button {
+    margin-left: 5px;
+    min-width: 75px;
+}
+
+/* ===== COMMON COMPONENTS ===== */
+/*
+ * ███████████████████████████████████████████████████████████████
+ * █                                                             █
+ * █    BUTTONS, INPUTS, AND CONTROLS                           █
+ * █    - Generic styling for common UI elements                 █
+ * █    - Used throughout the application                        █
+ * █    - Base for theme-specific styling                        █
+ * █                                                             █
+ * ███████████████████████████████████████████████████████████████
+ */
+
+.xp-button {
+    background-color: #ECE9D8;
+    border: 1px solid #003C74;
+    border-radius: 3px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-family: 'Tahoma', sans-serif;
+    font-size: 11px;
+    box-shadow: 1px 1px 0 #FFFFFF inset, -1px -1px 0 #707070 inset;
+}
+
+.xp-button:hover {
+    background-color: #F2F1E7;
+}
+
+.xp-button:active {
+    background-color: #E3E2DD;
+    box-shadow: -1px -1px 0 #FFFFFF inset, 1px 1px 0 #707070 inset;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    padding-left: 11px;
+    padding-right: 9px;
+}
+
+.xp-input {
+    border: 1px solid #7B9EBD;
+    padding: 3px 5px;
+    background-color: white;
+    font-family: 'Tahoma', sans-serif;
+    font-size: 11px;
+    height: 22px;
+}
+
+.xp-input:focus {
+    border-color: #0078D7;
+    outline: none;
+}
+
+/* ===== ANIMATION AND TRANSITIONS ===== */
+/*
+ * ███████████████████████████████████████████████████████████████
+ * █                                                             █
+ * █    ANIMATIONS                                               █
+ * █    - Smooth transitions for UI elements                     █
+ * █    - Subtle fade effects                                    █
+ * █    - XP-style hover and active states                       █
+ * █                                                             █
+ * ███████████████████████████████████████████████████████████████
+ */
+
+@keyframes xp-fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.xp-fade-in {
+    animation: xp-fadeIn 0.3s ease-in-out;
+}
+
+@keyframes xp-slideDown {
+    from { transform: translateY(-10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.xp-slide-down {
+    animation: xp-slideDown 0.2s ease-out;
+}
+
+/* ===== BROWSER TAB SYSTEM ===== */
+/*
+ * ███████████████████████████████████████████████████████████████
+ * █                                                             █
+ * █    TAB BAR SYSTEM                                           █
+ * █    - Tabbed browsing implementation                         █
+ * █    - Draggable tabs for reordering                          █
+ * █    - Active tab highlighting                                █
+ * █                                                             █
+ * ███████████████████████████████████████████████████████████████
+ */
+
+.xp-tab {
+    display: inline-flex;
+    align-items: center;
+    height: 26px;
+    min-width: 120px;
+    max-width: 200px;
+    padding: 0 8px 0 10px;
+    margin: 4px 2px 0 0;
+    border-radius: 3px 3px 0 0;
+    background: linear-gradient(to bottom, #E6E6E6, #D1D1D1);
+    border: 1px solid #999;
+    border-bottom: none;
+    position: relative;
+    cursor: default;
+}
+
+.xp-tab.active {
+    background: linear-gradient(to bottom, #FFFFFF, #F0F0F0);
+    z-index: 10;
+}
+
+.tab-title {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tab-close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 9px;
+    margin-left: 5px;
+    padding: 0 2px;
+}
+
+.tab-close:hover {
+    background-color: #E81123;
+    color: white;
+    border-radius: 2px;
+}
+
+.new-tab-button {
+    margin-top: 4px;
+    padding: 0 8px;
+    height: 26px;
+    border-radius: 3px 3px 0 0;
+    background: transparent;
+    border: 1px solid transparent;
+}
+
+.new-tab-button:hover {
+    background: #E6E6E6;
+    border-color: #999;
+}
+
+/* 
+ * /\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\
+ * 
+ * Developed by ZARI CORP - 2025 
+ * Building the browser of tomorrow with the aesthetic of yesterday
+ * 
+ * "We do what we must because we can." - Internet Server Team
+ * 
+ * /\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\
+ */

@@ -1,0 +1,684 @@
+/**
+ * █▀▀ █▀█ █▀▄ █▀▀ ▀▄▀
+ * █▄▄ █▄█ █▄▀ ██▄ █░█
+ * 
+ * ╔═══════════════════════════════════════════════════════════════╗
+ * ║ Windows XP Control Panel Styling                              ║
+ * ║ Authentic Windows XP Luna Blue theme styling for UI elements  ║
+ * ║ Used by Resource Limiter Settings Panel and other components  ║
+ * ╚═══════════════════════════════════════════════════════════════╝
+ * 
+ * This stylesheet recreates the iconic Windows XP UI elements including:
+ * - Window frames with blue title bars
+ * - Control panel sidebar with categories
+ * - Buttons, checkboxes, radio buttons, and dropdowns
+ * - Sliders with XP styling
+ * - Progress bars with the classic XP blue gradient
+ * - Form controls and layout components
+ * 
+ * Copyright (c) 2025 ZARI CORP - All Rights Reserved
+ */
+
+/* ███████████████████████████████████████████████████████████████ */
+/* █ Color Variables                                             █ */
+/* █ XP Luna Blue theme color palette                            █ */
+/* ███████████████████████████████████████████████████████████████ */
+
+:root {
+    /* Window Colors */
+    --xp-title-blue-start: #0A246A;
+    --xp-title-blue-end: #A6CAF0;
+    --xp-window-border: #0055EA;
+    --xp-window-bg: #ECE9D8;
+    
+    /* Button Colors */
+    --xp-button-face: #ECE9D8;
+    --xp-button-highlight: #FFFFFF;
+    --xp-button-shadow: #ACA899;
+    --xp-button-text: #000000;
+    
+    /* Control Panel Colors */
+    --xp-sidebar-bg: #D6DFF7;
+    --xp-sidebar-selected: #FFFFFF;
+    --xp-sidebar-hover: #E3E8F9;
+    --xp-content-bg: #FFFFFF;
+    --xp-header-text: #0046D5;
+    --xp-header-line: #7A96DF;
+    
+    /* Progress Bar Colors */
+    --xp-progress-bg: #FFFFFF;
+    --xp-progress-border: #919B9C;
+    --xp-progress-fill-start: #3169C6;
+    --xp-progress-fill-end: #B2D6FC;
+    
+    /* Form Control Colors */
+    --xp-input-bg: #FFFFFF;
+    --xp-input-border: #7F9DB9;
+    --xp-input-disabled: #E1E1E1;
+    --xp-checkbox-check: #1A3778;
+    
+    /* Other UI Colors */
+    --xp-tooltip-bg: #FFFFE1;
+    --xp-tooltip-border: #000000;
+    --xp-selection-blue: #316AC5;
+}
+
+/* ███████████████████████████████████████████████████████████████ */
+/* █ Base Window Styling                                         █ */
+/* █ Windows XP window frame and title bar                       █ */
+/* ███████████████████████████████████████████████████████████████ */
+
+.xp-window {
+    border: 1px solid var(--xp-window-border);
+    background-color: var(--xp-window-bg);
+    border-radius: 3px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    font-family: 'Tahoma', 'Arial', sans-serif;
+    font-size: 11px;
+    color: #000000;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.xp-window-title {
+    background: linear-gradient(to right, var(--xp-title-blue-start), var(--xp-title-blue-end));
+    padding: 5px 5px 5px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 25px;
+    user-select: none;
+}
+
+.xp-window-title-text {
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.xp-title-icon {
+    margin-right: 5px;
+    width: 16px;
+    height: 16px;
+}
+
+.xp-window-controls {
+    display: flex;
+}
+
+.xp-window-control {
+    width: 21px;
+    height: 21px;
+    border: none;
+    margin-left: 2px;
+    cursor: pointer;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.xp-window-help {
+    background-image: url('../../assets/icons/help.png');
+}
+
+.xp-window-close {
+    background-image: url('../../assets/icons/close.png');
+}
+
+.xp-window-buttons {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    background-color: var(--xp-window-bg);
+    border-top: 1px solid #CCCCCC;
+}
+
+/* ███████████████████████████████████████████████████████████████ */
+/* █ Control Panel Layout                                        █ */
+/* █ Windows XP control panel with sidebar and content area      █ */
+/* ███████████████████████████████████████████████████████████████ */
+
+.xp-control-panel-content {
+    display: flex;
+    min-height: 400px;
+}
+
+.xp-control-panel-sidebar {
+    width: 200px;
+    background-color: var(--xp-sidebar-bg);
+    padding: 10px 0;
+}
+
+.xp-category-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.xp-category-item:hover {
+    background-color: var(--xp-sidebar-hover);
+}
+
+.xp-category-item.selected {
+    background-color: var(--xp-sidebar-selected);
+    font-weight: bold;
+}
+
+.xp-category-item img {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+}
+
+.xp-control-panel-details {
+    flex: 1;
+    background-color: var(--xp-content-bg);
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.xp-category-content {
+    display: block;
+}
+
+.xp-category-content.hidden {
+    display: none;
+}
+
+.xp-category-header {
+    margin-bottom: 15px;
+}
+
+.xp-category-header h2 {
+    color: var(--xp-header-text);
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+}
+
+.xp-header-line {
+    height: 1px;
+    background-color: var(--xp-header-line);
+    margin-top: 5px;
+}
+
+.xp-master-switch {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.xp-description {
+    color: #545454;
+    font-size: 11px;
+    margin-top: 3px;
+    margin-left: 22px;
+}
+
+.xp-form-section {
+    margin-bottom: 15px;
+}
+
+/* ███████████████████████████████████████████████████████████████ */
+/* █ Buttons                                                     █ */
+/* █ Windows XP style buttons with gradients and borders         █ */
+/* ███████████████████████████████████████████████████████████████ */
+
+.xp-button {
+    background: linear-gradient(to bottom, #FFFFFF, #ECE9D8);
+    border: 1px solid var(--xp-button-shadow);
+    border-radius: 3px;
+    padding: 5px 10px;
+    min-width: 75px;
+    font-family: 'Tahoma', 'Arial', sans-serif;
+    font-size: 11px;
+    color: var(--xp-button-text);
+    cursor: pointer;
+    margin-right: 5px;
+    outline: none;
+}
+
+.xp-button:hover {
+    background: linear-gradient(to bottom, #FFFFFF, #F0EFE2);
+}
+
+.xp-button:active {
+    background: #ECE9D8;
+    border-color: #ACA899;
+    box-shadow: inset 1px 1px 1px #CFCFCF;
+}
+
+.xp-button:focus {
+    border-color: var(--xp-selection-blue);
+}
+
+.xp-buttons {
+    display: flex;
+    margin-top: 15px;
+    justify-content: flex-end;
+}
+
+/* ███████████████████████████████████████████████████████████████ */
+/* █ Checkboxes and Radio Buttons                                █ */
+/* █ Windows XP style checkbox and radio button controls         █ */
+/* ███████████████████████████████████████████████████████████████ */
+
+.xp-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.xp-checkbox input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 13px;
+    height: 13px;
+    border: 1px solid var(--xp-input-border);
+    background-color: var(--xp-input-bg);
+    position: relative;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.xp-checkbox input[type="checkbox"]:checked:after {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 9px;
+    height: 9px;
+    background-color: var(--xp-checkbox-check);
+}
+
+.xp-checkbox input[type="checkbox"]:focus {
+    outline: 1px dotted var(--xp-selection-blue);
+}
+
+.xp-checkbox-text {
+    font-size: 11px;
+}
+
+.xp-radio {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.xp-radio input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 13px;
+    height: 13px;
+    border: 1px solid var(--xp-input-border);
+    border-radius: 50%;
+    background-color: var(--xp-input-bg);
+    position: relative;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.xp-radio input[type="radio"]:checked:after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--xp-checkbox-check);
+}
+
+.xp-radio input[type="radio"]:focus {
+    outline: 1px dotted var(--xp-selection-blue);
+}
+
+.xp-radio-text {
+    font-size: 11px;
+}
+
+.xp-radio-group {
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+/* ███████████████████████████████████████████████████████████████ */
+/* █ Sliders                                                     █ */
+/* █ Windows XP style range slider controls                      █ */
+/* ███████████████████████████████████████████████████████████████ */
+
+.xp-slider-container {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.xp-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 250px;
+    height: 20px;
+    background: transparent;
+    outline: none;
+    margin-right: 10px;
+}
+
+.xp-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 5px;
+    background: var(--xp-input-bg);
+    border: 1px solid var(--xp-input-border);
+    border-radius: 3px;
+}
+
+.xp-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 11px;
+    height: 21px;
+    border: 1px solid var(--xp-button-shadow);
+    border-radius: 3px;
+    background: linear-gradient(to bottom, #FFFFFF, #ECE9D8);
+    cursor: pointer;
+    margin-top: -9px;
+}
+
+.xp-slider::-moz-range-track {
+    width: 100%;
+    height: 5px;
+    background: var(--xp-input-bg);
+    border: 1px solid var(--xp-input-border);
+    border-radius: 3px;
+}
+
+.xp-slider::-moz-range-thumb {
+    width: 11px;
+    height: 21px;
+    border: 1px solid var(--xp-button-shadow);
+    border-radius: 3px;
+    background: linear-gradient(to bottom, #FFFFFF, #ECE9D8);
+    cursor: pointer;
+}
+
+.xp-slider-value {
+    font-size: 11px;
+    min-width: 60px;
+}
+
+/* ███████████████████████████████████████████████████████████████ */
+/* █ Dropdowns                                                   █ */
+/* █ Windows XP style dropdown/select controls                   █ */
+/* ███████████████████████████████████████████████████████████████ */
+
+.xp-dropdown-container {
+    position: relative;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.xp-dropdown {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--xp-input-bg);
+    border: 1px solid var(--xp-input-border);
+    border-radius: 0;
+    padding: 3px 20px 3px 5px;
+    font-family: 'Tahoma', 'Arial', sans-serif;
+    font-size: 11px;
+    min-width: 200px;
+    cursor: pointer;
+    background-image: url('../../assets/icons/dropdown-arrow.png');
+    background-repeat: no-repeat;
+    background-position: right 5px center;
+}
+
+.xp-dropdown:focus {
+    border-color: var(--xp-selection-blue);
+    outline: none;
+}
+
+/* ███████████████████████████████████████████████████████████████ */
+/* █ Progress Bars                                               █ */
+/* █ Windows XP style progress bar with blue gradient            █ */
+/* ███████████████████████████████████████████████████████████████ */
+
+.xp-progress-container {
+    width: 100%;
+    height: 16px;
+    background-color: var(--xp-progress-bg);
+    border: 1px solid var(--xp-progress-border);
+    border-radius: 1px;
+    margin: 5px 0;
+    overflow: hidden;
+}
+
+.xp-progress-bar {
+    height: 100%;
+    background: linear-gradient(to bottom, var(--xp-progress-fill-start), var(--xp-progress-fill-end));
+    width: 0%; /* Default value, will be set by JavaScript */
+    transition: width 0.3s ease;
+}
+
+/* ███████████████████████████████████████████████████████████████ */
+/* █ Form Inputs                                                 █ */
+/* █ Windows XP style text inputs, textareas, and labels         █ */
+/* ███████████████████████████████████████████████████████████████ */
+
+.xp-form-group {
+    margin-bottom: 10px;
+}
+
+.xp-form-label {
+    display: block;
+    font-size: 11px;
+    margin-bottom: 3px;
+}
+
+.xp-textarea {
+    width: 100%;
+    min-height: 80px;
+    border: 1px solid var(--xp-input-border);
+    background-color: var(--xp-input-bg);
+    padding: 5px;
+    font-family: 'Tahoma', 'Arial', sans-serif;
+    font-size: 11px;
+    resize: vertical;
+}
+
+.xp-textarea:focus {
+    border-color: var(--xp-selection-blue);
+    outline: none;
+}
+
+/* ███████████████████████████████████████████████████████████████ */
+/* █ Stats Panels                                                █ */
+/* █ Windows XP style panels for displaying statistics           █ */
+/* ███████████████████████████████████████████████████████████████ */
+
+.xp-stats-panel {
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    padding: 10px;
+    margin-top: 15px;
+    background-color: #F5F5F5;
+}
+
+.xp-stats-header {
+    font-weight: bold;
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.xp-stats-value {
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.xp-stats-details {
+    margin-top: 10px;
+    font-size: 11px;
+}
+
+.xp-stats-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3px;
+}
+
+.xp-stats-label {
+    color: #666666;
+}
+
+.xp-stats-data {
+    font-weight: bold;
+}
+
+/* ███████████████████████████████████████████████████████████████ */
+/* █ Profile Display                                             █ */
+/* █ Windows XP style profile description panels                 █ */
+/* ███████████████████████████████████████████████████████████████ */
+
+.xp-profile-description {
+    display: flex;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #F9F9F9;
+}
+
+.xp-profile-icon {
+    width: 48px;
+    height: 48px;
+    margin-right: 15px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.xp-profile-icon.performance {
+    background-image: url('../../assets/icons/profile-performance.png');
+}
+
+.xp-profile-icon.balanced {
+    background-image: url('../../assets/icons/profile-balanced.png');
+}
+
+.xp-profile-icon.efficiency {
+    background-image: url('../../assets/icons/profile-efficiency.png');
+}
+
+.xp-profile-icon.gaming {
+    background-image: url('../../assets/icons/profile-gaming.png');
+}
+
+.xp-profile-icon.streaming {
+    background-image: url('../../assets/icons/profile-streaming.png');
+}
+
+.xp-profile-icon.custom {
+    background-image: url('../../assets/icons/profile-custom.png');
+}
+
+.xp-profile-details {
+    flex: 1;
+}
+
+.xp-profile-details h3 {
+    margin: 0 0 5px 0;
+    font-size: 12px;
+    color: var(--xp-header-text);
+}
+
+.xp-profile-details p {
+    margin: 0 0 10px 0;
+    font-size: 11px;
+    color: #666666;
+}
+
+.xp-profile-specs {
+    width: 100%;
+    font-size: 11px;
+    border-collapse: collapse;
+}
+
+.xp-profile-specs th {
+    text-align: left;
+    color: #666666;
+    font-weight: normal;
+    padding-right: 10px;
+    width: 30%;
+}
+
+.xp-profile-specs td {
+    font-weight: bold;
+    padding-right: 15px;
+}
+
+/* ███████████████████████████████████████████████████████████████ */
+/* █ Utility Classes                                             █ */
+/* █ Helper classes for common needs                             █ */
+/* ███████████████████████████████████████████████████████████████ */
+
+.hidden {
+    display: none !important;
+}
+
+/* Ensures proper sizing for all elements */
+* {
+    box-sizing: border-box;
+}
+
+/* Animations for smooth transitions */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+/* ███████████████████████████████████████████████████████████████ */
+/* █ Responsiveness                                              █ */
+/* █ Basic responsive design for different screen sizes          █ */
+/* ███████████████████████████████████████████████████████████████ */
+
+@media (max-width: 768px) {
+    .xp-control-panel-content {
+        flex-direction: column;
+    }
+    
+    .xp-control-panel-sidebar {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+    
+    .xp-category-item {
+        width: auto;
+        flex-direction: column;
+        text-align: center;
+        padding: 5px;
+    }
+    
+    .xp-category-item img {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+    
+    .xp-slider {
+        width: 200px;
+    }
+}

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* XP-style toolbar button */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Tahoma', 'Arial', sans-serif;
+            user-select: none;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .weather-toolbar-button {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(to bottom, #FFFFFF 0%, #ECE9D8 100%);
+            border: 1px solid #ADB1B8;
+            border-radius: 3px;
+            padding: 4px 8px;
+            cursor: pointer;
+            box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+            height: 22px;
+            position: relative;
+        }
+        
+        .weather-toolbar-button:hover {
+            background: linear-gradient(to bottom, #EDF2F8 0%, #D9E6F7 100%);
+            border-color: #4884D9;
+        }
+        
+        .weather-toolbar-button:active {
+            background: #DAE7F8;
+            box-shadow: inset 1px 1px 1px rgba(0,0,0,0.1);
+        }
+        
+        .weather-icon {
+            font-size: 16px;
+            margin-right: 4px;
+        }
+        
+        .weather-temp {
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        /* Tooltip */
+        .weather-tooltip {
+            position: absolute;
+            display: none;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 5px;
+            background-color: #FFFFCC;
+            border: 1px solid #ADB1B8;
+            padding: 5px 8px;
+            font-size: 11px;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
+        }
+        
+        .weather-toolbar-button:hover .weather-tooltip {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-toolbar-button" id="weather-button">
+        <span class="weather-icon" id="condition-icon">🌤️</span>
+        <span class="weather-temp" id="current-temp">--°C</span>
+        <div class="weather-tooltip" id="weather-tooltip">
+            Loading weather data...
+        </div>
+    </div>
+    
+    <script>
+        /**
+         * █▀▀ █▀█ █▀▄ █▀▀ ▀▄▀
+         * █▄▄ █▄█ █▄▀ ██▄ █░█
+         * 
+         * Weather Plugin - Toolbar Component
+         * Shows current temperature and condition in browser toolbar
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const weatherButton = document.getElementById('weather-button');
+            const conditionIcon = document.getElementById('condition-icon');
+            const currentTemp = document.getElementById('current-temp');
+            const tooltip = document.getElementById('weather-tooltip');
+            
+            // Last weather data
+            let weatherData = null;
+            
+            // Initialize UI
+            function init() {
+                // Request weather data from plugin
+                window.parent.postMessage({
+                    plugin: 'weather-plugin',
+                    type: 'getWeather'
+                }, '*');
+                
+                // Set up message listener
+                window.addEventListener('message', handleMessage);
+                
+                // Handle button click to toggle sidebar
+                weatherButton.addEventListener('click', toggleSidebar);
+            }
+            
+            // Handle messages from the plugin
+            function handleMessage(event) {
+                const { plugin, type, data } = event.data;
+                
+                if (plugin !== 'weather-plugin') return;
+                
+                switch (type) {
+                    case 'weatherData':
+                        updateWeatherUI(data);
+                        break;
+                    case 'weatherAlert':
+                        showAlert(data);
+                        break;
+                }
+            }
+            
+            // Update the weather UI with data
+            function updateWeatherUI(data) {
+                // Save data
+                weatherData = data;
+                
+                // Update temperature
+                currentTemp.textContent = `${data.temperature}${data.units}`;
+                
+                // Update condition icon
+                conditionIcon.textContent = getWeatherIcon(data.condition);
+                
+                // Update tooltip
+                tooltip.innerHTML = `
+                    <strong>${data.location}</strong><br>
+                    ${data.condition}<br>
+                    Humidity: ${data.humidity}%<br>
+                    Wind: ${data.windSpeed} ${data.windUnits}<br>
+                    <small>Updated: ${data.updated}</small>
+                `;
+            }
+            
+            // Toggle sidebar
+            function toggleSidebar() {
+                window.parent.postMessage({
+                    plugin: 'weather-plugin',
+                    type: 'toggleSidebar'
+                }, '*');
+            }
+            
+            // Show weather alert as notification
+            function showAlert(alertData) {
+                // Change button style temporarily to show alert
+                weatherButton.style.backgroundColor = '#FFF4D6';
+                weatherButton.style.borderColor = '#FFC658';
+                
+                // Flash icon
+                conditionIcon.textContent = '⚠️';
+                
+                // Reset after 3 seconds
+                setTimeout(() => {
+                    weatherButton.style.backgroundColor = '';
+                    weatherButton.style.borderColor = '';
+                    
+                    // Restore icon if we have weather data
+                    if (weatherData) {
+                        conditionIcon.textContent = getWeatherIcon(weatherData.condition);
+                    } else {
+                        conditionIcon.textContent = '🌤️';
+                    }
+                }, 3000);
+            }
+            
+            // Get weather icon based on condition
+            function getWeatherIcon(condition) {
+                const condition_lower = condition.toLowerCase();
+                
+                if (condition_lower.includes('sunny')) return '☀️';
+                if (condition_lower.includes('partly cloudy')) return '⛅';
+                if (condition_lower.includes('cloudy')) return '☁️';
+                if (condition_lower.includes('rain')) return '🌧️';
+                if (condition_lower.includes('thunder')) return '⛈️';
+                if (condition_lower.includes('snow')) return '❄️';
+                if (condition_lower.includes('fog')) return '🌫️';
+                if (condition_lower.includes('wind')) return '💨';
+                if (condition_lower.includes('clear')) return '🌙';
+                
+                // Default icon
+                return '🌤️';
+            }
+            
+            // Initialize
+            init();
+        });
+    </script>
+</body>
+</html>

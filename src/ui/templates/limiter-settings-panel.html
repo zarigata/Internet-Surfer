@@ -1,0 +1,400 @@
+<!--
+█▀▀ █▀█ █▀▄ █▀▀ ▀▄▀
+█▄▄ █▄█ █▄▀ ██▄ █░█
+
+Windows XP Style Resource Limiter Settings Panel
+Copyright (c) 2025 ZARI CORP - All Rights Reserved
+
+╔═══════════════════════════════════════════════════════════════╗
+║ Resource Limiter Settings Panel - Windows XP Control Panel    ║
+║ Allows configuration of CPU, memory and network limiters      ║
+║ Tabbed interface with XP-styled controls and real-time stats  ║
+╚═══════════════════════════════════════════════════════════════╝
+-->
+
+<div class="xp-window limiter-settings-panel">
+  <!-- Window Title Bar -->
+  <div class="xp-window-title">
+    <div class="xp-window-title-text">
+      <img src="../../assets/icons/resources-16.png" alt="Resources" class="xp-title-icon">
+      Resource Limiter Settings
+    </div>
+    <div class="xp-window-controls">
+      <button class="xp-window-control xp-window-help" title="Help"></button>
+      <button class="xp-window-control xp-window-close" title="Close"></button>
+    </div>
+  </div>
+
+  <!-- Control Panel Main Content -->
+  <div class="xp-control-panel-content">
+    <!-- Left Sidebar with Categories -->
+    <div class="xp-control-panel-sidebar">
+      <div class="xp-category-item selected" data-category="profiles">
+        <img src="../../assets/icons/profiles-32.png" alt="Profiles">
+        <span>Resource Profiles</span>
+      </div>
+      <div class="xp-category-item" data-category="cpu">
+        <img src="../../assets/icons/cpu-32.png" alt="CPU">
+        <span>CPU Settings</span>
+      </div>
+      <div class="xp-category-item" data-category="memory">
+        <img src="../../assets/icons/memory-32.png" alt="Memory">
+        <span>Memory Settings</span>
+      </div>
+      <div class="xp-category-item" data-category="network">
+        <img src="../../assets/icons/network-32.png" alt="Network">
+        <span>Network Settings</span>
+      </div>
+      <div class="xp-category-item" data-category="advanced">
+        <img src="../../assets/icons/advanced-32.png" alt="Advanced">
+        <span>Advanced Options</span>
+      </div>
+    </div>
+
+    <!-- Right Content Area -->
+    <div class="xp-control-panel-details">
+      <!-- Master Enable Switch -->
+      <div class="xp-master-switch">
+        <label class="xp-checkbox">
+          <input type="checkbox" id="limiters-enabled">
+          <span class="xp-checkbox-text">Enable Resource Limiters</span>
+        </label>
+        <div class="xp-description">
+          When enabled, browser resource usage will be controlled according to the settings below.
+        </div>
+      </div>
+
+      <!-- Category Content Areas -->
+      <div class="xp-category-content" id="profiles-content">
+        <div class="xp-category-header">
+          <h2>Resource Profiles</h2>
+          <div class="xp-header-line"></div>
+        </div>
+        
+        <div class="xp-form-section">
+          <label class="xp-form-label">Select a resource profile:</label>
+          <div class="xp-dropdown-container">
+            <select id="profile-selector" class="xp-dropdown">
+              <option value="performance">Performance (Maximum resources)</option>
+              <option value="balanced" selected>Balanced (Recommended)</option>
+              <option value="efficiency">Efficiency (Medium restrictions)</option>
+              <option value="gaming">Gaming (Strict limitations)</option>
+              <option value="streaming">Streaming (Prioritize upload)</option>
+              <option value="custom">Custom Settings</option>
+            </select>
+          </div>
+          
+          <div class="xp-profile-description" id="profile-description">
+            <div class="xp-profile-icon balanced"></div>
+            <div class="xp-profile-details">
+              <h3>Balanced Profile</h3>
+              <p>Maintains a balance between performance and resource usage. Recommended for most users.</p>
+              <table class="xp-profile-specs">
+                <tr>
+                  <th>CPU Limit:</th>
+                  <td>70%</td>
+                  <th>Memory Limit:</th>
+                  <td>1024 MB</td>
+                </tr>
+                <tr>
+                  <th>Network:</th>
+                  <td>Unlimited</td>
+                  <th>Priority:</th>
+                  <td>Normal</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          
+          <div class="xp-buttons">
+            <button class="xp-button" id="apply-profile">Apply Profile</button>
+            <button class="xp-button" id="save-as-custom">Save as Custom</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="xp-category-content hidden" id="cpu-content">
+        <div class="xp-category-header">
+          <h2>CPU Limiter Settings</h2>
+          <div class="xp-header-line"></div>
+        </div>
+        
+        <div class="xp-form-section">
+          <label class="xp-checkbox">
+            <input type="checkbox" id="cpu-limiter-enabled">
+            <span class="xp-checkbox-text">Enable CPU limiting</span>
+          </label>
+          
+          <div class="xp-form-group">
+            <label class="xp-form-label">Maximum CPU usage:</label>
+            <div class="xp-slider-container">
+              <input type="range" min="10" max="100" value="70" class="xp-slider" id="cpu-max-percent">
+              <div class="xp-slider-value"><span id="cpu-max-value">70</span>%</div>
+            </div>
+          </div>
+          
+          <div class="xp-form-group">
+            <label class="xp-form-label">Process priority:</label>
+            <div class="xp-radio-group">
+              <label class="xp-radio">
+                <input type="radio" name="cpu-priority" value="high">
+                <span class="xp-radio-text">High</span>
+              </label>
+              <label class="xp-radio">
+                <input type="radio" name="cpu-priority" value="normal" checked>
+                <span class="xp-radio-text">Normal</span>
+              </label>
+              <label class="xp-radio">
+                <input type="radio" name="cpu-priority" value="below normal">
+                <span class="xp-radio-text">Below Normal</span>
+              </label>
+              <label class="xp-radio">
+                <input type="radio" name="cpu-priority" value="low">
+                <span class="xp-radio-text">Low</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="xp-stats-panel">
+            <div class="xp-stats-header">Current CPU Usage</div>
+            <div class="xp-progress-container">
+              <div class="xp-progress-bar" id="cpu-usage-bar" style="width: 0%"></div>
+            </div>
+            <div class="xp-stats-value"><span id="cpu-usage-value">0</span>%</div>
+            <div class="xp-stats-details">
+              <div class="xp-stats-row">
+                <span class="xp-stats-label">Browser CPU:</span>
+                <span class="xp-stats-data" id="browser-cpu">0%</span>
+              </div>
+              <div class="xp-stats-row">
+                <span class="xp-stats-label">System CPU:</span>
+                <span class="xp-stats-data" id="system-cpu">0%</span>
+              </div>
+              <div class="xp-stats-row">
+                <span class="xp-stats-label">Throttling:</span>
+                <span class="xp-stats-data" id="cpu-throttling">Inactive</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="xp-category-content hidden" id="memory-content">
+        <div class="xp-category-header">
+          <h2>Memory Limiter Settings</h2>
+          <div class="xp-header-line"></div>
+        </div>
+        
+        <div class="xp-form-section">
+          <label class="xp-checkbox">
+            <input type="checkbox" id="memory-limiter-enabled">
+            <span class="xp-checkbox-text">Enable memory limiting</span>
+          </label>
+          
+          <div class="xp-form-group">
+            <label class="xp-form-label">Maximum browser memory:</label>
+            <div class="xp-slider-container">
+              <input type="range" min="256" max="4096" step="128" value="1024" class="xp-slider" id="memory-max-mb">
+              <div class="xp-slider-value"><span id="memory-max-value">1024</span> MB</div>
+            </div>
+          </div>
+          
+          <div class="xp-form-group">
+            <label class="xp-form-label">Maximum per-tab memory:</label>
+            <div class="xp-slider-container">
+              <input type="range" min="50" max="500" step="10" value="200" class="xp-slider" id="memory-per-tab-mb">
+              <div class="xp-slider-value"><span id="memory-per-tab-value">200</span> MB</div>
+            </div>
+          </div>
+          
+          <div class="xp-form-group">
+            <label class="xp-checkbox">
+              <input type="checkbox" id="memory-aggressive-gc">
+              <span class="xp-checkbox-text">Enable aggressive garbage collection</span>
+            </label>
+            <div class="xp-description">
+              Performs more frequent garbage collection to reduce memory usage. May impact performance.
+            </div>
+          </div>
+          
+          <div class="xp-stats-panel">
+            <div class="xp-stats-header">Current Memory Usage</div>
+            <div class="xp-progress-container">
+              <div class="xp-progress-bar" id="memory-usage-bar" style="width: 0%"></div>
+            </div>
+            <div class="xp-stats-value"><span id="memory-usage-value">0</span> MB</div>
+            <div class="xp-stats-details">
+              <div class="xp-stats-row">
+                <span class="xp-stats-label">Main Process:</span>
+                <span class="xp-stats-data" id="main-process-memory">0 MB</span>
+              </div>
+              <div class="xp-stats-row">
+                <span class="xp-stats-label">Renderer:</span>
+                <span class="xp-stats-data" id="renderer-memory">0 MB</span>
+              </div>
+              <div class="xp-stats-row">
+                <span class="xp-stats-label">Tab Count:</span>
+                <span class="xp-stats-data" id="tab-count">0</span>
+              </div>
+            </div>
+            <button class="xp-button" id="force-gc">Force Garbage Collection</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="xp-category-content hidden" id="network-content">
+        <div class="xp-category-header">
+          <h2>Network Throttler Settings</h2>
+          <div class="xp-header-line"></div>
+        </div>
+        
+        <div class="xp-form-section">
+          <label class="xp-checkbox">
+            <input type="checkbox" id="network-limiter-enabled">
+            <span class="xp-checkbox-text">Enable network throttling</span>
+          </label>
+          
+          <div class="xp-form-group">
+            <label class="xp-form-label">Network profile:</label>
+            <div class="xp-dropdown-container">
+              <select id="network-profile" class="xp-dropdown">
+                <option value="unlimited" selected>Unlimited</option>
+                <option value="fast-4g">Fast 4G</option>
+                <option value="3g">3G</option>
+                <option value="2g">2G</option>
+                <option value="slow-2g">Slow 2G</option>
+                <option value="dial-up">Dial-up</option>
+                <option value="satellite">Satellite</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+          </div>
+          
+          <div id="custom-network-settings" class="hidden">
+            <div class="xp-form-group">
+              <label class="xp-form-label">Download speed:</label>
+              <div class="xp-slider-container">
+                <input type="range" min="0" max="10000" step="100" value="0" class="xp-slider" id="network-download-kbps">
+                <div class="xp-slider-value"><span id="network-download-value">0</span> Kbps</div>
+              </div>
+            </div>
+            
+            <div class="xp-form-group">
+              <label class="xp-form-label">Upload speed:</label>
+              <div class="xp-slider-container">
+                <input type="range" min="0" max="5000" step="100" value="0" class="xp-slider" id="network-upload-kbps">
+                <div class="xp-slider-value"><span id="network-upload-value">0</span> Kbps</div>
+              </div>
+            </div>
+            
+            <div class="xp-form-group">
+              <label class="xp-form-label">Latency:</label>
+              <div class="xp-slider-container">
+                <input type="range" min="0" max="2000" step="10" value="0" class="xp-slider" id="network-latency-ms">
+                <div class="xp-slider-value"><span id="network-latency-value">0</span> ms</div>
+              </div>
+            </div>
+            
+            <div class="xp-form-group">
+              <label class="xp-form-label">Packet loss:</label>
+              <div class="xp-slider-container">
+                <input type="range" min="0" max="10" step="0.1" value="0" class="xp-slider" id="network-packet-loss">
+                <div class="xp-slider-value"><span id="network-packet-loss-value">0</span>%</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="xp-form-group">
+            <label class="xp-form-label">Excluded domains (one per line):</label>
+            <textarea id="network-excluded-domains" class="xp-textarea" placeholder="example.com"></textarea>
+          </div>
+          
+          <div class="xp-stats-panel">
+            <div class="xp-stats-header">Current Network Usage</div>
+            <div class="xp-stats-details">
+              <div class="xp-stats-row">
+                <span class="xp-stats-label">Download:</span>
+                <span class="xp-stats-data" id="network-download-rate">0 KB/s</span>
+              </div>
+              <div class="xp-stats-row">
+                <span class="xp-stats-label">Upload:</span>
+                <span class="xp-stats-data" id="network-upload-rate">0 KB/s</span>
+              </div>
+              <div class="xp-stats-row">
+                <span class="xp-stats-label">Active Connections:</span>
+                <span class="xp-stats-data" id="network-connections">0</span>
+              </div>
+              <div class="xp-stats-row">
+                <span class="xp-stats-label">Throttling:</span>
+                <span class="xp-stats-data" id="network-throttling">Inactive</span>
+              </div>
+            </div>
+            <button class="xp-button" id="reset-network-stats">Reset Statistics</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="xp-category-content hidden" id="advanced-content">
+        <div class="xp-category-header">
+          <h2>Advanced Options</h2>
+          <div class="xp-header-line"></div>
+        </div>
+        
+        <div class="xp-form-section">
+          <div class="xp-form-group">
+            <label class="xp-checkbox">
+              <input type="checkbox" id="auto-apply-gaming-mode">
+              <span class="xp-checkbox-text">Automatically apply Gaming profile when games are detected</span>
+            </label>
+          </div>
+          
+          <div class="xp-form-group">
+            <label class="xp-checkbox">
+              <input type="checkbox" id="auto-apply-streaming-mode">
+              <span class="xp-checkbox-text">Automatically apply Streaming profile when streaming is detected</span>
+            </label>
+          </div>
+          
+          <div class="xp-form-group">
+            <label class="xp-checkbox">
+              <input type="checkbox" id="enable-notifications">
+              <span class="xp-checkbox-text">Show notifications when resource limits are reached</span>
+            </label>
+          </div>
+          
+          <div class="xp-form-group">
+            <label class="xp-checkbox">
+              <input type="checkbox" id="enable-leak-detection">
+              <span class="xp-checkbox-text">Enable memory leak detection</span>
+            </label>
+          </div>
+          
+          <div class="xp-form-group">
+            <label class="xp-form-label">Log level:</label>
+            <div class="xp-dropdown-container">
+              <select id="log-level" class="xp-dropdown">
+                <option value="error">Error only</option>
+                <option value="warn" selected>Warnings and errors</option>
+                <option value="info">Information and above</option>
+                <option value="debug">All (debug)</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="xp-buttons">
+            <button class="xp-button" id="reset-all-settings">Reset All Settings</button>
+            <button class="xp-button" id="export-settings">Export Settings</button>
+            <button class="xp-button" id="import-settings">Import Settings</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="xp-window-buttons">
+    <button class="xp-button" id="apply-settings">Apply</button>
+    <button class="xp-button" id="ok-settings">OK</button>
+    <button class="xp-button" id="cancel-settings">Cancel</button>
+  </div>
+</div>

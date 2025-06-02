@@ -1,0 +1,11 @@
+{
+    "id": "weather-plugin",
+    "name": "Weather Sidebar",
+    "version": "1.0.0",
+    "description": "Displays weather information in a sidebar panel",
+    "author": "ZARI CORP",
+    "permissions": ["messaging", "storage"],
+    "main": "main.js",
+    "sidebar": "weather-sidebar.html",
+    "toolbar": "weather-toolbar.html"
+}

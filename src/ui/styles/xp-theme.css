@@ -1,0 +1,360 @@
+/*
+ * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+ * ░░░████░░██░░██░░██████░░░░░████░░░██░░░██░░██████░░░░░█████░░██░░██░░██████░░░
+ * ░░██░░░░░██░░██░░░░██░░░░░░██░░██░░██░░░██░░██░░░░░░░░██░░░░░██░░██░░░░██░░░░░
+ * ░░░████░░██████░░░░██░░░░░░██████░░░██░██░░░█████░░░░░░████░░██████░░░░██░░░░░
+ * ░░░░░░██░██░░██░░░░██░░░░░░██░░██░░░░███░░░░██░░░░░░░░░░░░██░██░░██░░░░██░░░░░
+ * ░░░████░░██░░██░░░░██░░░░░░██░░██░░░░░█░░░░░██████░░░░█████░░██░░██░░░░██░░░░░
+ * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+ *
+ * INTERNET SERVER - WINDOWS XP THEME
+ * 
+ * This CSS implements the nostalgic Windows XP visual style
+ * with blue gradient title bars, beveled buttons, and classic UI elements.
+ * 
+ * [CRACKED BY K3YGEN TEAM - 2025]
+ */
+
+/* ===== XP THEME ROOT VARIABLES ===== */
+
+:root {
+    /* XP Classic Blue Theme Colors */
+    --xp-blue-dark: #0A246A;
+    --xp-blue-medium: #0054E3;
+    --xp-blue-light: #A6CAF0;
+    --xp-window-bg: #ECE9D8;
+    --xp-border-color: #003C74;
+    --xp-button-face: #ECE9D8;
+    --xp-button-highlight: #FFFFFF;
+    --xp-button-shadow: #707070;
+    --xp-text: #000000;
+    --xp-text-disabled: #808080;
+    --xp-link: #0000FF;
+    --xp-link-visited: #800080;
+    
+    /* XP UI Element Sizes */
+    --xp-titlebar-height: 28px;
+    --xp-menubar-height: 23px;
+    --xp-toolbar-height: 36px;
+    --xp-statusbar-height: 22px;
+    
+    /* XP Font Settings */
+    --xp-font-family: 'Tahoma', sans-serif;
+    --xp-font-size: 11px;
+    --xp-font-size-title: 12px;
+}
+
+/* ===== XP WINDOW FRAME ===== */
+
+.xp-theme {
+    background-color: var(--xp-window-bg);
+    color: var(--xp-text);
+    font-family: var(--xp-font-family);
+    font-size: var(--xp-font-size);
+}
+
+.xp-titlebar {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(to right, var(--xp-blue-dark), var(--xp-blue-light));
+    color: white;
+    height: var(--xp-titlebar-height);
+    padding: 0 2px 0 8px;
+}
+
+.xp-titlebar-icon {
+    margin-right: 5px;
+}
+
+.xp-titlebar-text {
+    flex: 1;
+    font-weight: bold;
+    font-size: var(--xp-font-size-title);
+}
+
+.xp-titlebar-controls {
+    display: flex;
+}
+
+.xp-titlebar .xp-button {
+    height: 20px;
+    width: 28px;
+    padding: 0;
+    margin-left: 2px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.xp-titlebar .close-button {
+    background: linear-gradient(to bottom, #F83E3E, #C00E0E);
+    color: white;
+    border-color: #9B1616;
+}
+
+.xp-titlebar .close-button:hover {
+    background: linear-gradient(to bottom, #FF5353, #D12323);
+}
+
+/* ===== XP MENU SYSTEM ===== */
+
+.xp-menubar {
+    background-color: var(--xp-window-bg);
+    border-bottom: 1px solid #7A7A7A;
+    display: flex;
+    height: var(--xp-menubar-height);
+    padding: 0 2px;
+}
+
+.xp-menu {
+    position: relative;
+    margin-right: 1px;
+}
+
+.xp-menu-item {
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 3px 10px;
+    height: 100%;
+    cursor: default;
+    font-family: var(--xp-font-family);
+    font-size: var(--xp-font-size);
+}
+
+.xp-menu-item:hover,
+.xp-menu-item.active {
+    background-color: var(--xp-blue-medium);
+    color: white;
+    border-color: var(--xp-blue-dark);
+}
+
+.xp-menu-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--xp-window-bg);
+    border: 1px solid var(--xp-border-color);
+    border-top-color: var(--xp-blue-dark);
+    min-width: 180px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 1000;
+}
+
+.xp-menu.active .xp-menu-dropdown {
+    display: block;
+}
+
+.xp-menu-dropdown-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 4px 20px;
+    background: transparent;
+    border: none;
+    cursor: default;
+    font-family: var(--xp-font-family);
+    font-size: var(--xp-font-size);
+}
+
+.xp-menu-dropdown-item:hover {
+    background-color: var(--xp-blue-medium);
+    color: white;
+}
+
+.xp-menu-separator {
+    height: 1px;
+    background-color: #7A7A7A;
+    margin: 3px 2px;
+}
+
+/* ===== XP TOOLBAR ===== */
+
+.xp-toolbar {
+    background: linear-gradient(to bottom, #FFFFFF, #ECE9D8);
+    border-bottom: 1px solid #7A7A7A;
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+}
+
+.toolbar-button {
+    height: 26px;
+    width: 26px;
+    padding: 3px;
+    margin-right: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toolbar-button img {
+    width: 16px;
+    height: 16px;
+}
+
+.address-bar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+    height: 26px;
+    border: 1px solid #7B9EBD;
+    background-color: white;
+}
+
+.address-prefix {
+    padding: 0 5px;
+    background-color: #ECE9D8;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid #7B9EBD;
+    font-weight: bold;
+}
+
+#url-input {
+    flex: 1;
+    border: none;
+    padding: 0 5px;
+    margin: 0;
+    height: 100%;
+}
+
+.go-button {
+    height: 22px;
+    margin: 1px;
+    padding: 0 8px;
+}
+
+/* ===== XP STATUS BAR ===== */
+
+.xp-statusbar {
+    background-color: var(--xp-window-bg);
+    border-top: 1px solid #7A7A7A;
+    display: flex;
+    align-items: center;
+    padding: 2px 8px;
+}
+
+.status-text {
+    flex: 1;
+}
+
+.status-zones {
+    display: flex;
+}
+
+.status-zone {
+    padding: 2px 8px;
+    margin-left: 5px;
+    border: 1px solid #7A7A7A;
+    background-color: #F5F5F5;
+}
+
+/* ===== XP INFOBAR ===== */
+
+.xp-infobar {
+    background: linear-gradient(to bottom, #FFFFFF, #ECE9D8);
+    border-top: 1px solid #7A7A7A;
+    padding: 2px 8px;
+}
+
+/* ===== XP SCROLLBARS ===== */
+
+::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: var(--xp-window-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #D0D0D0;
+    border: 1px solid #A0A0A0;
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #C0C0C0;
+}
+
+::-webkit-scrollbar-button {
+    background-color: var(--xp-window-bg);
+    border: 1px solid #A0A0A0;
+    display: block;
+    height: 16px;
+    width: 16px;
+}
+
+::-webkit-scrollbar-button:hover {
+    background-color: #E0E0E0;
+}
+
+/* ===== XP THEME VARIANTS ===== */
+
+/* XP Luna (Blue) */
+.xp-theme.luna {
+    --xp-blue-dark: #1953A6;
+    --xp-blue-medium: #2C5AC8;
+    --xp-blue-light: #84B7E7;
+    --xp-window-bg: #ECE9D8;
+}
+
+/* XP Dark Mode */
+.xp-theme.dark {
+    --xp-blue-dark: #202020;
+    --xp-blue-medium: #404040;
+    --xp-blue-light: #606060;
+    --xp-window-bg: #2C2C2C;
+    --xp-button-face: #404040;
+    --xp-button-highlight: #505050;
+    --xp-button-shadow: #202020;
+    --xp-text: #FFFFFF;
+    --xp-border-color: #202020;
+    color: #FFFFFF;
+}
+
+/* Hacker Mode */
+.xp-theme.hacker {
+    --xp-blue-dark: #002B00;
+    --xp-blue-medium: #004400;
+    --xp-blue-light: #008800;
+    --xp-window-bg: #001800;
+    --xp-button-face: #004400;
+    --xp-button-highlight: #006600;
+    --xp-button-shadow: #001100;
+    --xp-text: #00FF00;
+    --xp-border-color: #008800;
+    color: #00FF00;
+    font-family: 'Courier New', monospace;
+}
+
+.xp-theme.hacker .xp-button {
+    color: #00FF00;
+    border-color: #008800;
+}
+
+.xp-theme.hacker .xp-input {
+    background-color: #002200;
+    color: #00FF00;
+    border-color: #008800;
+}
+
+/* 
+ * +------------------------------------------------------------------+
+ * |                                                                  |
+ * |   ______/¯¯\__/¯¯\__/¯¯¯¯¯\__/¯¯\__/¯¯\_                        |
+ * |  |  ____/ /\ \|  _ \|  / ____|  _ \|  _ \                       |
+ * |  | |___/ /__\ \ |_) | | |    | |_) | |_) |                      |
+ * |  |  __| / __ \|  _ <| | |    |  _ <|  _ <                       |
+ * |  | |  / /    \ \ |_) | | |____| |_) | |_) |                     |
+ * |  |_| /_/      \_\____/  \_____|____/|____/                      |
+ * |                                                                  |
+ * |  Windows XP Theme Pack Installed Successfully!                   |
+ * |                                                                  |
+ * +------------------------------------------------------------------+
+ */

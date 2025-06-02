@@ -185,6 +185,35 @@ def check_ollama_configuration():
         print(f"{Colors.RED}[ERROR]{Colors.END} Failed to check Ollama configuration: {str(e)}")
         return False
 
+def check_limiter_components():
+    """Verify resource limiter components are properly installed"""
+    try:
+        # Check for required limiter files
+        limiter_manager = BASE_DIR / "src" / "limiters" / "limiter-manager.js"
+        cpu_limiter = BASE_DIR / "src" / "limiters" / "cpu-limiter.js"
+        memory_limiter = BASE_DIR / "src" / "limiters" / "memory-limiter.js"
+        network_throttler = BASE_DIR / "src" / "limiters" / "network-throttler.js"
+        
+        # Check UI components
+        limiter_settings_panel = BASE_DIR / "src" / "ui" / "components" / "limiter-settings-panel.js"
+        
+        missing_files = []
+        for file_path in [limiter_manager, cpu_limiter, memory_limiter, network_throttler, limiter_settings_panel]:
+            if not file_path.exists():
+                missing_files.append(file_path)
+        
+        if missing_files:
+            print(f"{Colors.YELLOW}[WARN]{Colors.END} Some resource limiter components are missing:")
+            for file in missing_files:
+                print(f"{Colors.YELLOW}  - {file.relative_to(BASE_DIR)}{Colors.END}")
+            return False
+        
+        print(f"{Colors.GREEN}[+]{Colors.END} Resource limiter components verified")
+        return True
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR]{Colors.END} Failed to check resource limiter components: {str(e)}")
+        return False
+
 # ███████████████████████████████████████████████████████████████
 # █ MAIN EXECUTION FUNCTIONS                                    █
 # █ Core functionality for launching the application            █
@@ -196,8 +225,20 @@ def start_browser(dev_mode=False):
         # Command to run the browser
         cmd = [NPM_CMD, "run", "dev" if dev_mode else "start"]
         
-        print(f"{Colors.GREEN}[+]{Colors.END} Starting Internet Server Browser in {'development' if dev_mode else 'normal'} mode...")
+        # Set development flag to enable debugging tools if needed
+        os.environ['BROWSER_DEV_MODE'] = '1' if dev_mode else '0'
+        
+        # Print startup information
+        print(f"{Colors.GREEN}[+]{Colors.END} Starting Internet Server Browser - Alpha Version")
+        print(f"{Colors.BLUE}[INFO]{Colors.END} Mode: {'Development' if dev_mode else 'Normal'}")
+        print(f"{Colors.BLUE}[INFO]{Colors.END} Platform: {platform.system()} {platform.release()}")
+        print(f"{Colors.BLUE}[INFO]{Colors.END} Resource limiters: Enabled")
         print(f"{Colors.CYAN}[RUN]{Colors.END} {' '.join(cmd)}")
+        
+        # Notify user about alpha version
+        print(f"{Colors.YELLOW}\n[ALPHA TEST VERSION]{Colors.END} Please report any issues or feedback")
+        print(f"{Colors.YELLOW}[INFO]{Colors.END} Use the limiter settings panel to manage system resources\n")
+        time.sleep(1)  # Short pause for user to read the message
         
         # Execute in a subprocess so that it doesn't block Python
         env = os.environ.copy()
@@ -229,12 +270,13 @@ def start_browser(dev_mode=False):
 
 def main():
     """Main entry point for the launcher"""
+    # Parse command line arguments
     parser = argparse.ArgumentParser(description="Internet Server Browser Launcher")
-    parser.add_argument("--dev", action="store_true", help="Start in development mode")
-    parser.add_argument("--reset", action="store_true", help="Reset virtual environment and dependencies")
+    parser.add_argument("--dev", action="store_true", help="Start in development mode with DevTools")
+    parser.add_argument("--reset", action="store_true", help="Reset virtual environment and reinstall dependencies")
+    parser.add_argument("--build", choices=['win', 'linux'], help="Build packages for specified platform")
     args = parser.parse_args()
     
-    # Display banner
     print_banner()
     
     # Reset if requested
@@ -245,21 +287,42 @@ def main():
         if NODE_MODULES.exists():
             shutil.rmtree(NODE_MODULES)
     
-    # Setup environment
+    # Check and setup virtual environment
     if not setup_virtual_environment():
-        return 1
-        
-    if not check_node_dependencies():
-        return 1
-        
-    if not check_ollama_configuration():
+        print(f"{Colors.RED}[FATAL]{Colors.END} Failed to setup Python virtual environment")
         return 1
     
-    # Start the browser
-    if not start_browser(dev_mode=args.dev):
+    # Check Node.js dependencies
+    if not check_node_dependencies():
+        print(f"{Colors.RED}[FATAL]{Colors.END} Failed to install Node.js dependencies")
         return 1
-        
-    print(f"{Colors.GREEN}[SUCCESS]{Colors.END} Internet Server Browser launched successfully!")
+    
+    # Check Ollama configuration
+    if not check_ollama_configuration():
+        print(f"{Colors.YELLOW}[WARN]{Colors.END} Ollama configuration issues detected")
+    
+    # Verify resource limiter components
+    if not check_limiter_components():
+        print(f"{Colors.YELLOW}[WARN]{Colors.END} Some resource limiter components may be missing")
+        print(f"{Colors.YELLOW}[ACTION]{Colors.END} Installing missing resource limiter dependencies...")
+        # Install necessary packages for resource limiters
+        success, out, err = run_command([NPM_CMD, "install", "pidusage", "throttle", "http-proxy"])
+        if not success:
+            print(f"{Colors.RED}[ERROR]{Colors.END} Failed to install resource limiter dependencies")
+    
+    # Build packages if requested
+    if args.build:
+        print(f"{Colors.GREEN}[+]{Colors.END} Building packages for {args.build}...")
+        success, out, err = run_command([NPM_CMD, "run", f"build:{args.build}"])
+        if not success:
+            print(f"{Colors.RED}[ERROR]{Colors.END} Build failed")
+            return 1
+        print(f"{Colors.GREEN}[+]{Colors.END} Build completed successfully")
+        return 0
+    
+    # Start the browser
+    start_browser(dev_mode=args.dev)
+    
     return 0
 
 # ███████████████████████████████████████████████████████████████

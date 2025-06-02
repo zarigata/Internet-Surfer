@@ -46,9 +46,12 @@ let config = {
 // Main browser window reference
 let mainWindow = null;
 
-// Resource monitors
-let cpuMonitor = null;
-let ramMonitor = null;
+// Resource manager
+let limiterManager = null;
+
+// Import our limiter modules
+const { LimiterManager } = require('./src/limiters/limiter-manager');
+const { PluginSystem } = require('./src/plugins/plugin-loader');
 let networkThrottle = null;
 
 /**
@@ -174,70 +177,64 @@ function createMainWindow() {
 }
 
 /**
- * Starts monitoring system resources based on user limits
- * Implements CPU, RAM, and network limiting capabilities
+ * ███████████████████████████████████████████████████████████████
+ * █ Initialize Resource Limiter Manager                        █
+ * █ Sets up CPU, RAM, and network throttling based on config   █
+ * ███████████████████████████████████████████████████████████████
  */
-function applyResourceLimits() {
-  // CPU limiting
-  if (cpuMonitor) {
-    clearInterval(cpuMonitor);
-  }
+function initLimiterManager() {
+  console.log('Initializing Resource Limiter Manager...');
   
-  cpuMonitor = setInterval(async () => {
-    try {
-      const stats = await pidusage(process.pid);
-      const cpuPercent = stats.cpu;
-      
-      // If CPU usage exceeds limit, throttle by sleeping
-      if (cpuPercent > config.limiter.cpu) {
-        const throttleAmount = Math.min(100, Math.max(10, cpuPercent - config.limiter.cpu));
-        const sleepTime = throttleAmount * 10; // Sleep proportional to overage
-        
-        setTimeout(() => {}, sleepTime); // Simple CPU throttling by forcing sleep
-        mainWindow.webContents.send('update-cpu-usage', cpuPercent);
+  // Create the limiter manager instance
+  limiterManager = new LimiterManager(mainWindow);
+  
+  // Initialize with settings from config (if available)
+  if (config.limiter) {
+    // Convert legacy config format to new format if needed
+    const limiterSettings = {
+      enabled: true,
+      profiles: {
+        current: 'custom',
+        available: ['performance', 'balanced', 'efficiency', 'gaming', 'streaming', 'custom']
+      },
+      cpu: {
+        enabled: config.limiter.cpu > 0,
+        maxCpuPercent: config.limiter.cpu || 70,
+        priority: 'normal'
+      },
+      memory: {
+        enabled: config.limiter.ram > 0,
+        maxMemoryMB: config.limiter.ram || 1024,
+        perTabLimitMB: 200,
+        aggressiveGC: false
+      },
+      network: {
+        enabled: config.limiter.network > 0,
+        downloadKbps: config.limiter.network || 0,
+        uploadKbps: config.limiter.network || 0,
+        latencyMs: 0,
+        packetLossRate: 0,
+        profile: config.limiter.network > 0 ? 'custom' : 'unlimited'
+      },
+      advanced: {
+        startupMode: 'auto',
+        startWithProfile: 'balanced',
+        monitoringInterval: 2000,
+        notificationsEnabled: true,
+        showResourceWarnings: true,
+        debugMode: IS_DEV,
+        autoCleanupThreshold: 90,
+        enableDiagnostics: false,
+        exclusions: []
       }
-    } catch (err) {
-      console.error('❌ CPU monitoring error:', err);
-    }
-  }, 2000);
-
-  // RAM limiting
-  if (ramMonitor) {
-    clearInterval(ramMonitor);
+    };
+    
+    // Apply the settings
+    limiterManager.updateSettings(limiterSettings);
   }
   
-  ramMonitor = setInterval(() => {
-    const memoryInfo = process.getProcessMemoryInfo();
-    const memoryUsageMB = Math.round(memoryInfo.private / 1024 / 1024);
-    
-    mainWindow.webContents.send('update-ram-usage', memoryUsageMB);
-    
-    // If RAM exceeds limit, notify renderer to suspend tabs
-    if (memoryUsageMB > config.limiter.ram) {
-      mainWindow.webContents.send('suspend-inactive-tabs');
-    }
-  }, 5000);
-
-  // Network throttling (if enabled)
-  if (config.limiter.network > 0) {
-    // Create a proxy server for throttling
-    const proxy = httpProxy.createProxyServer({});
-    
-    const server = http.createServer((req, res) => {
-      // Apply throttling here
-      proxy.web(req, res, { target: req.url });
-    });
-    
-    server.listen(8989);
-    
-    // Configure Electron to use our proxy
-    session.defaultSession.setProxy({
-      proxyRules: 'http=localhost:8989;https=localhost:8989'
-    });
-  } else {
-    // Reset proxy settings when throttling disabled
-    session.defaultSession.setProxy({});
-  }
+  console.log('Resource Limiter Manager initialized successfully');
+  return limiterManager;
 }
 
 /**
@@ -289,8 +286,25 @@ app.whenReady().then(() => {
   // Create the browser window
   createMainWindow();
   
-  // Apply resource limits based on config
-  applyResourceLimits();
+  // Initialize plugin system
+  const pluginSystem = new PluginSystem(mainWindow);
+  pluginSystem.loadPlugins();
+  
+  // Initialize the resource limiter manager
+  initLimiterManager();
+  
+  // Log startup details
+  console.log(`
+    █▀▀ █▀█ █▀▄ █▀▀ ▀▄▀
+    █▄▄ █▄█ █▄▀ ██▄ █░█
+    
+    Internet Server Browser - Alpha Version
+    Platform: ${process.platform}
+    Electron: ${process.versions.electron}
+    Chrome: ${process.versions.chrome}
+    Node.js: ${process.versions.node}
+    Debug Mode: ${IS_DEV ? 'Enabled' : 'Disabled'}
+  `);
   
   // macOS specific: re-create window when dock icon is clicked and no windows are open
   app.on('activate', () => {
@@ -322,9 +336,26 @@ app.on('window-all-closed', () => {
 
 // Save configuration when app is about to quit
 app.on('before-quit', () => {
+  // Save user configuration
   saveConfiguration();
   
-  // Clean up monitors
-  if (cpuMonitor) clearInterval(cpuMonitor);
-  if (ramMonitor) clearInterval(ramMonitor);
+  // Clean up resource limiters
+  if (limiterManager) {
+    // Update config with current limiter settings
+    const limiterSettings = limiterManager.settings;
+    
+    // Convert to legacy format for backward compatibility
+    config.limiter = {
+      cpu: limiterSettings.cpu.enabled ? limiterSettings.cpu.maxCpuPercent : 0,
+      ram: limiterSettings.memory.enabled ? limiterSettings.memory.maxMemoryMB : 0,
+      network: limiterSettings.network.enabled ? limiterSettings.network.downloadKbps : 0
+    };
+    
+    // Save updated config
+    saveConfiguration();
+    
+    console.log('Resource limiters cleaned up');
+  }
+  
+  console.log('Application shutting down gracefully...');
 });
